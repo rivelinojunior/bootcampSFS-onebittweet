@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TrendingTopics from '../../components/TrendingTopics'
 import photo from '../../images/fake_avatar.png';
+import axios from 'axios';
 
 
 class TrendingTopicsContainer extends Component {
@@ -13,10 +14,21 @@ class TrendingTopicsContainer extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      hashtags: [['#OneBitCode', '10k'], ['#RubyOnRails', '10k']]
-    })
+    axios.get(process.env.REACT_APP_API + '/trending')
+      .then((response) => {
+        console.log(response.data.hashtags);
+        this.setState(() => {
+          return {
+            hashtags: response.data.hashtags
+          }
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
+
+
 
   render() {
     return (
